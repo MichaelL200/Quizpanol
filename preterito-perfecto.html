@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pretérito Perfecto</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Fira+Code:wght@400;500&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f3ec;
+    --page: #fffdf8;
+    --red: #c0272d;
+    --red-light: #f5e5e5;
+    --red-dim: #9e2226;
+    --ink: #1e1a14;
+    --muted: #8a7f72;
+    --border: #ddd5c5;
+    --green: #2e7d55;
+    --green-bg: #e8f4ed;
+    --orange: #b35c00;
+    --orange-bg: #fdf0e0;
+    --blue: #1a4f7a;
+    --blue-bg: #e5eef6;
+    --correct: #2e7d55;
+    --wrong: #c0272d;
+    --gold: #b8952a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    background-image: radial-gradient(ellipse at 20% 10%, rgba(192,39,45,0.04) 0%, transparent 60%),
+                      radial-gradient(ellipse at 80% 90%, rgba(26,79,122,0.04) 0%, transparent 60%);
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ─── HEADER ─── */
+  .hero {
+    background: var(--red);
+    color: white;
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 18px,
+      rgba(255,255,255,0.03) 18px,
+      rgba(255,255,255,0.03) 19px
+    );
+  }
+
+  .hero-unit {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    opacity: 0.7;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 7vw, 3.8rem);
+    font-weight: 600;
+    line-height: 1.05;
+    position: relative;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .hero-sub {
+    font-size: 0.85rem;
+    opacity: 0.75;
+    margin-top: 10px;
+    font-weight: 300;
+  }
+
+  /* ─── NAV TABS ─── */
+  .tabs {
+    display: flex;
+    background: var(--red-dim);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 16px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: white; }
+
+  .tab.active {
+    color: white;
+    border-bottom-color: #ffd87a;
+    background: rgba(255,255,255,0.08);
+  }
+
+  /* ─── SECTIONS ─── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 36px 20px;
+  }
+
+  /* ─── SECTION 1: TWORZENIE ─── */
+  .rule-box {
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--red);
+    border-radius: 3px;
+    padding: 24px 24px 20px;
+    margin-bottom: 28px;
+  }
+
+  .rule-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 14px;
+  }
+
+  .formula {
+    font-family: 'Fira Code', monospace;
+    font-size: 1rem;
+    background: var(--red-light);
+    color: var(--red);
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Conjugation table */
+  .conj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+  }
+
+  .conj-head {
+    background: var(--red);
+    color: white;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 9px 12px;
+    text-align: center;
+  }
+
+  .conj-cell {
+    padding: 9px 12px;
+    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    text-align: center;
+    background: var(--page);
+  }
+
+  .conj-cell:nth-child(4n) { border-right: none; }
+
+  .conj-cell .pronoun {
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: block;
+    font-weight: 300;
+    margin-bottom: 2px;
+  }
+
+  .conj-cell .haber {
+    font-family: 'Fira Code', monospace;
+    color: var(--red);
+    font-weight: 500;
+  }
+
+  .conj-cell .part {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--blue);
+    font-style: italic;
+  }
+
+  /* Participle section */
+  .part-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .part-card {
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .part-card .ending {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .part-card .rule-arrow {
+    font-size: 1.1rem;
+    color: var(--red);
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  .part-card .example {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* Irregular table */
+  .irreg-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .irreg-item {
+    background: var(--orange-bg);
+    border: 1px solid #e8c990;
+    border-radius: 3px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .irreg-inf {
+    font-size: 0.78rem;
+    color: var(--orange);
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 3px;
+  }
+
+  .irreg-part {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* Notes */
+  .note {
+    background: var(--blue-bg);
+    border-left: 3px solid var(--blue);
+    padding: 12px 16px;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.87rem;
+    margin-bottom: 12px;
+    color: var(--blue);
+  }
+
+  .note strong { font-weight: 600; }
+
+  /* ─── SECTION 2: MARCADORES ─── */
+  .markers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .marker-group {
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .marker-group-title {
+    background: var(--red);
+    color: white;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+  }
+
+  .marker-list {
+    padding: 10px 14px;
+    list-style: none;
+  }
+
+  .marker-list li {
+    font-size: 0.9rem;
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--border);
+    color: var(--ink);
+  }
+
+  .marker-list li:last-child { border-bottom: none; }
+
+  .marker-list li::before {
+    content: '·';
+    color: var(--red);
+    margin-right: 6px;
+    font-weight: bold;
+  }
+
+  .use-box {
+    background: var(--green-bg);
+    border-left: 4px solid var(--green);
+    padding: 16px 20px;
+    border-radius: 0 3px 3px 0;
+    margin-bottom: 16px;
+  }
+
+  .use-box strong {
+    color: var(--green);
+    font-size: 0.85rem;
+    font-family: 'Fira Code', monospace;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .use-example {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* ─── SECTION 3: QUIZ ─── */
+  .quiz-wrap {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 28px 20px;
+  }
+
+  .quiz-mode-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+
+  .qmode-btn {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--page);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 13px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .qmode-btn.active {
+    border-color: var(--red);
+    color: var(--red);
+    background: var(--red-light);
+  }
+
+  .qmode-btn:hover:not(.active) { border-color: var(--muted); color: var(--ink); }
+
+  .q-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .q-progress-bar {
+    flex: 1;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .q-progress-fill {
+    height: 100%;
+    background: var(--red);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .q-progress-text {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .q-card {
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px 28px 26px;
+    animation: fadeUp 0.28s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-num {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.63rem;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .q-prompt {
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .q-prompt strong {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--red);
+  }
+
+  .q-hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 22px;
+  }
+
+  .q-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .q-input-wrap input {
+    flex: 1;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    caret-color: var(--red);
+  }
+
+  .q-input-wrap input:focus { border-color: var(--red); }
+  .q-input-wrap input.correct { border-color: var(--correct); color: var(--correct); background: var(--green-bg); }
+  .q-input-wrap input.wrong { border-color: var(--wrong); color: var(--wrong); background: var(--red-light); animation: shake 0.28s ease; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  .q-feedback {
+    min-height: 1.4em;
+    font-size: 0.88rem;
+    font-style: italic;
+    margin-top: 12px;
+  }
+
+  .q-feedback.correct { color: var(--correct); }
+  .q-feedback.wrong { color: var(--wrong); }
+
+  .q-btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .q-btn {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 3px;
+    padding: 11px 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .q-btn-check { background: var(--red); color: white; flex: 1; }
+  .q-btn-check:hover { background: var(--red-dim); }
+  .q-btn-check:disabled { opacity: 0.35; cursor: default; }
+  .q-btn-skip { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .q-btn-skip:hover { border-color: var(--muted); color: var(--ink); }
+  .q-btn-next { background: var(--red); color: white; flex: 1; }
+  .q-btn-next:hover { background: var(--red-dim); }
+
+  .q-score {
+    background: var(--page);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 44px 24px;
+    text-align: center;
+    animation: fadeUp 0.35s ease;
+  }
+
+  .q-score-pct {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .q-score-lbl {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .q-score-stats {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+
+  .q-score-stat .val { font-family: 'Cormorant Garamond', serif; font-size: 2rem; }
+  .q-score-stat .val.g { color: var(--green); }
+  .q-score-stat .val.b { color: var(--red); }
+  .q-score-stat .lbl { font-family: 'Fira Code', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+  .q-score-msg { font-style: italic; color: var(--muted); margin-bottom: 28px; font-size: 0.95rem; }
+
+  .q-btn-restart { background: var(--red); color: white; padding: 12px 32px; font-size: 0.73rem; }
+  .q-btn-restart:hover { background: var(--red-dim); }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 20px;
+  }
+
+  p { font-size: 0.92rem; line-height: 1.7; color: var(--muted); margin-bottom: 14px; }
+
+  .section-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-unit">Nuevo Prisma A1 · Unidad 11</div>
+  <h1>Pretérito <em>Perfecto</em></h1>
+  <div class="hero-sub">Tworzenie · Użycie · Ćwiczenie</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('tworzenie', this)">📐 Tworzenie</button>
+  <button class="tab" onclick="showTab('marcadores', this)">🕐 Marcadores</button>
+  <button class="tab" onclick="showTab('quiz', this)">✏️ Quiz</button>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB 1: TWORZENIE
+══════════════════════════════════ -->
+<div class="section active" id="tab-tworzenie">
+<div class="content">
+
+  <div class="section-label">Budowa czasu</div>
+  <h2>Jak się tworzy?</h2>
+
+  <div class="rule-box">
+    <div class="rule-title">Czas złożony</div>
+    <div class="formula">HABER (presente) + PARTICIPIO</div>
+
+    <div class="conj-grid">
+      <div class="conj-head">Osoba</div>
+      <div class="conj-head">haber</div>
+      <div class="conj-head">-ar → -ado</div>
+      <div class="conj-head">-er/-ir → -ido</div>
+
+      <div class="conj-cell"><span class="pronoun">yo</span><span class="haber">he</span></div>
+      <div class="conj-cell"><span class="haber">he</span></div>
+      <div class="conj-cell"><span class="part">jugado</span></div>
+      <div class="conj-cell"><span class="part">tenido / salido</span></div>
+
+      <div class="conj-cell"><span class="pronoun">tú</span><span class="haber">has</span></div>
+      <div class="conj-cell"><span class="haber">has</span></div>
+      <div class="conj-cell"><span class="part">jugado</span></div>
+      <div class="conj-cell"><span class="part">tenido / salido</span></div>
+
+      <div class="conj-cell"><span class="pronoun">él/ella</span><span class="haber">ha</span></div>
+      <div class="conj-cell"><span class="haber">ha</span></div>
+      <div class="conj-cell"><span class="part">jugado</span></div>
+      <div class="conj-cell"><span class="part">tenido / salido</span></div>
+
+      <div class="conj-cell"><span class="pronoun">nosotros</span><span class="haber">hemos</span></div>
+      <div class="conj-cell"><span class="haber">hemos</span></div>
+      <div class="conj-cell"><span class="part">jugado</span></div>
+      <div class="conj-cell"><span class="part">tenido / salido</span></div>
+
+      <div class="conj-cell"><span class="pronoun">vosotros</span><span class="haber">habéis</span></div>
+      <div class="conj-cell"><span class="haber">habéis</span></div>
+      <div class="conj-cell"><span class="part">jugado</span></div>
+      <div class="conj-cell"><span class="part">tenido / salido</span></div>
+
+      <div class="conj-cell"><span class="pronoun">ellos/uds</span><span class="haber">han</span></div>
+      <div class="conj-cell"><span class="haber">han</span></div>
+      <div class="conj-cell"><span class="part">jugado</span></div>
+      <div class="conj-cell"><span class="part">tenido / salido</span></div>
+    </div>
+  </div>
+
+  <div class="section-label">Participio regular</div>
+  <h2>Tworzenie participio</h2>
+
+  <div class="part-grid">
+    <div class="part-card">
+      <div class="ending">-AR</div>
+      <div class="rule-arrow">→ -ado</div>
+      <div class="example">jugar → jugado<br>hablar → hablado<br>trabajar → trabajado</div>
+    </div>
+    <div class="part-card">
+      <div class="ending">-ER</div>
+      <div class="rule-arrow">→ -ido</div>
+      <div class="example">tener → tenido<br>comer → comido<br>hacer → <em>hecho ★</em></div>
+    </div>
+    <div class="part-card">
+      <div class="ending">-IR</div>
+      <div class="rule-arrow">→ -ido</div>
+      <div class="example">salir → salido<br>abrir → <em>abierto ★</em><br>decir → <em>dicho ★</em></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Participio jest nieodmienne!</strong> Nie zmienia się ani przez rodzaj, ani przez liczbę.<br>
+    <em>Carlos ha comido…</em> &nbsp;·&nbsp; <em>María y Marta han comido…</em>
+  </div>
+
+  <div class="note" style="border-color: var(--orange); color: var(--orange); background: var(--orange-bg);">
+    <strong>Czasowniki zwrotne:</strong> zaimek zawsze PRZED haber.<br>
+    <em>Lucía <strong>se</strong> ha levantado temprano.</em>
+  </div>
+
+  <div class="section-label" style="margin-top:28px">Participio nieregularne</div>
+  <h2>Formy nieregularne</h2>
+
+  <div class="irreg-grid">
+    <div class="irreg-item"><div class="irreg-inf">hacer</div><div class="irreg-part">hecho</div></div>
+    <div class="irreg-item"><div class="irreg-inf">romper</div><div class="irreg-part">roto</div></div>
+    <div class="irreg-item"><div class="irreg-inf">ver</div><div class="irreg-part">visto</div></div>
+    <div class="irreg-item"><div class="irreg-inf">escribir</div><div class="irreg-part">escrito</div></div>
+    <div class="irreg-item"><div class="irreg-inf">volver</div><div class="irreg-part">vuelto</div></div>
+    <div class="irreg-item"><div class="irreg-inf">poner</div><div class="irreg-part">puesto</div></div>
+    <div class="irreg-item"><div class="irreg-inf">decir</div><div class="irreg-part">dicho</div></div>
+    <div class="irreg-item"><div class="irreg-inf">abrir</div><div class="irreg-part">abierto</div></div>
+    <div class="irreg-item"><div class="irreg-inf">ir</div><div class="irreg-part">ido</div></div>
+    <div class="irreg-item"><div class="irreg-inf">tener</div><div class="irreg-part">tenido</div></div>
+    <div class="irreg-item"><div class="irreg-inf">salir</div><div class="irreg-part">salido</div></div>
+    <div class="irreg-item"><div class="irreg-inf">venir</div><div class="irreg-part">venido</div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB 2: MARCADORES
+══════════════════════════════════ -->
+<div class="section" id="tab-marcadores">
+<div class="content">
+
+  <div class="section-label">Kiedy używamy?</div>
+  <h2>Użycie pretérito perfecto</h2>
+
+  <div class="use-box">
+    <strong>Zasada główna</strong>
+    <div class="use-example">
+      Mówimy o czynnościach <em>zakończonych</em> w teraźniejszości lub w <em>niezakończonym</em> okresie czasu.
+    </div>
+  </div>
+
+  <div class="use-box" style="border-color:#b8952a; background:#fdf8ec;">
+    <strong style="color:#b8952a">ya / todavía no</strong>
+    <div class="use-example">
+      <strong>ya</strong> + pret. perfecto → czynność przewidziana, która <em>już</em> się odbyła<br>
+      <strong>todavía no</strong> + pret. perfecto → czynność przewidziana, która jeszcze <em>nie</em> się odbyła
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:28px">Marcadores temporales</div>
+  <h2>Wyrażenia czasu</h2>
+
+  <div class="markers-grid">
+    <div class="marker-group">
+      <div class="marker-group-title">Hoy</div>
+      <ul class="marker-list">
+        <li>hoy</li>
+      </ul>
+    </div>
+    <div class="marker-group">
+      <div class="marker-group-title">Hace…</div>
+      <ul class="marker-list">
+        <li>hace cinco minutos</li>
+        <li>hace una hora</li>
+        <li>hace un rato</li>
+      </ul>
+    </div>
+    <div class="marker-group">
+      <div class="marker-group-title">Esta…</div>
+      <ul class="marker-list">
+        <li>esta mañana</li>
+        <li>esta tarde</li>
+        <li>esta noche</li>
+        <li>esta semana</li>
+      </ul>
+    </div>
+    <div class="marker-group">
+      <div class="marker-group-title">Este…</div>
+      <ul class="marker-list">
+        <li>este mes</li>
+        <li>este año</li>
+        <li>este fin de semana</li>
+        <li>este verano</li>
+      </ul>
+    </div>
+    <div class="marker-group">
+      <div class="marker-group-title">Últimamente</div>
+      <ul class="marker-list">
+        <li>últimamente</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top:12px">Przykłady z podręcznika</div>
+  <div class="use-box">
+    <strong>Przykłady</strong>
+    <div class="use-example">
+      Hoy ha sido un día horrible.<br>
+      Esta tarde he visto a Luis.<br>
+      Esta mañana he ido a la comisaría.<br>
+      Este año he estado en París de vacaciones.
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════
+     TAB 3: QUIZ
+══════════════════════════════════ -->
+<div class="section" id="tab-quiz">
+<div class="quiz-wrap">
+
+  <div class="quiz-mode-row" id="qmodeRow">
+    <button class="qmode-btn active" onclick="setQMode('all',this)">Wszystkie</button>
+    <button class="qmode-btn" onclick="setQMode('participio',this)">Participio</button>
+    <button class="qmode-btn" onclick="setQMode('conjugacion',this)">Odmiana</button>
+    <button class="qmode-btn" onclick="setQMode('zdanie',this)">Zdania</button>
+  </div>
+
+  <div class="q-progress-row">
+    <div class="q-progress-bar"><div class="q-progress-fill" id="qProgressFill"></div></div>
+    <div class="q-progress-text" id="qProgressText">0 / 0</div>
+  </div>
+
+  <div id="qArea"></div>
+
+</div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+// Participio quiz: [infinitivo, participio]
+const PARTICIPIOS = [
+  ["hablar","hablado"],["comer","comido"],["abrir","abierto"],
+  ["hacer","hecho"],["romper","roto"],["ver","visto"],
+  ["escribir","escrito"],["volver","vuelto"],["poner","puesto"],
+  ["decir","dicho"],["ir","ido"],["tener","tenido"],
+  ["salir","salido"],["venir","venido"],["trabajar","trabajado"],
+  ["preparar","preparado"],["llevar","llevado"],["lavar","lavado"],
+  ["levantar","levantado"],["cenar","cenado"],
+];
+
+// Conjugation quiz: [infinitivo, pronombre, forma correcta]
+const CONJUGACIONES = [
+  ["haber","yo","he"],["haber","tú","has"],["haber","él/ella","ha"],
+  ["haber","nosotros","hemos"],["haber","vosotros","habéis"],["haber","ellos","han"],
+  // full forms
+  ["trabajar (yo)","yo","he trabajado"],
+  ["comer (tú)","tú","has comido"],
+  ["salir (él)","él","ha salido"],
+  ["hacer (nosotros)","nosotros","hemos hecho"],
+  ["ver (vosotros)","vosotros","habéis visto"],
+  ["ir (ellos)","ellos","han ido"],
+  ["levantarse (yo)","yo","me he levantado"],
+  ["escribir (ella)","ella","ha escrito"],
+  ["volver (tú)","tú","has vuelto"],
+  ["abrir (ellos)","ellos","han abierto"],
+  ["decir (usted)","usted","ha dicho"],
+  ["poner (nosotros)","nosotros","hemos puesto"],
+];
+
+// Sentence fill quiz: [sentence with blank [INF], correct form]
+const ZDANIA = [
+  ["Juan, esta mañana (levantarse) ___ a las siete.", "se ha levantado"],
+  ["Hace cinco minutos que yo (terminar) ___ de desayunar.", "he terminado"],
+  ["Este mes mis padres no (salir) ___ de viaje.", "han salido"],
+  ["Hoy (ser) ___ un día muy especial.", "ha sido"],
+  ["Este año mi hermana (volver) ___ de México.", "ha vuelto"],
+  ["Esta tarde tú (escribir) ___ la carta.", "has escrito"],
+  ["¿(Comer, vosotros) ___ en casa hoy?", "habéis comido"],
+  ["Esta mañana mis amigos (quedarse) ___ en casa.", "se han quedado"],
+  ["Lucía (hacer) ___ gimnasia hoy.", "ha hecho"],
+  ["Esta mañana no (poder, yo) ___ ir en coche.", "he podido"],
+  ["Hemos tenido una reunión y no te (llamar, yo) ___.", "he podido llamar"],
+];
+
+// ── QUIZ STATE ────────────────────────────────────────
+let qMode = 'all';
+let qCards = [];
+let qIdx = 0, qCorrect = 0, qWrong = 0, qAnswered = false;
+
+function norm(s) {
+  return s.trim().replace(/[¡!¿?]/g,'').toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+
+function buildQCards(m) {
+  let list = [];
+  if (m === 'all' || m === 'participio') {
+    PARTICIPIOS.forEach(([inf, part]) => {
+      list.push({ type:'participio', prompt:`Podaj participio od: <strong>${inf}</strong>`, answer: part, hint: 'participio' });
+    });
+  }
+  if (m === 'all' || m === 'conjugacion') {
+    CONJUGACIONES.forEach(([inf, pron, form]) => {
+      list.push({ type:'conjugacion', prompt:`Odmień w pretérito perfecto:<br><strong>${inf}</strong> — ${pron}`, answer: form, hint: 'forma' });
+    });
+  }
+  if (m === 'all' || m === 'zdanie') {
+    ZDANIA.forEach(([sent, ans]) => {
+      list.push({ type:'zdanie', prompt: sent.replace('___','<span style="color:var(--red)">___</span>'), answer: ans, hint: 'wpisz formę' });
+    });
+  }
+  // shuffle
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  return list;
+}
+
+function setQMode(m, btn) {
+  qMode = m;
+  document.querySelectorAll('.qmode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  startQuiz();
+}
+
+function startQuiz() {
+  qCards = buildQCards(qMode);
+  qIdx = 0; qCorrect = 0; qWrong = 0;
+  renderQCard();
+}
+
+function updateQProgress() {
+  const total = qCards.length;
+  document.getElementById('qProgressFill').style.width = (qIdx / total * 100) + '%';
+  document.getElementById('qProgressText').textContent = qIdx + ' / ' + total;
+}
+
+function renderQCard() {
+  updateQProgress();
+  const area = document.getElementById('qArea');
+  if (qIdx >= qCards.length) { renderQScore(); return; }
+
+  qAnswered = false;
+  const c = qCards[qIdx];
+
+  area.innerHTML = `
+    <div class="q-card">
+      <div class="q-num">${qIdx + 1} z ${qCards.length}</div>
+      <div class="q-prompt">${c.prompt}</div>
+      <div class="q-hint">pretérito perfecto · ${c.hint}</div>
+      <div class="q-input-wrap">
+        <input type="text" id="qAns" placeholder="wpisz odpowiedź…" autocomplete="off" autocorrect="off" spellcheck="false" />
+      </div>
+      <div class="q-feedback" id="qFb"></div>
+      <div class="q-btn-row">
+        <button class="q-btn q-btn-check" id="qBtnCheck" onclick="checkQAnswer()">Sprawdź</button>
+        <button class="q-btn q-btn-skip" onclick="skipQCard()">Pomiń</button>
+      </div>
+    </div>`;
+
+  const inp = document.getElementById('qAns');
+  inp.focus();
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { if (!qAnswered) checkQAnswer(); else nextQCard(); }
+  });
+}
+
+function checkQAnswer() {
+  if (qAnswered) return;
+  qAnswered = true;
+  const c = qCards[qIdx];
+  const inp = document.getElementById('qAns');
+  const fb = document.getElementById('qFb');
+  const btn = document.getElementById('qBtnCheck');
+
+  const ok = norm(inp.value) === norm(c.answer);
+  if (ok) {
+    qCorrect++;
+    inp.classList.add('correct');
+    fb.textContent = '✓ Brawo!';
+    fb.className = 'q-feedback correct';
+  } else {
+    qWrong++;
+    inp.classList.add('wrong');
+    fb.innerHTML = `✗ Poprawna forma: <strong style="color:var(--correct)">${c.answer}</strong>`;
+    fb.className = 'q-feedback wrong';
+  }
+  inp.disabled = true;
+  btn.style.display = 'none';
+  document.querySelector('.q-btn-row').insertAdjacentHTML('afterbegin',
+    `<button class="q-btn q-btn-next" onclick="nextQCard()">Dalej →</button>`);
+}
+
+function skipQCard() {
+  if (qAnswered) return;
+  qAnswered = true;
+  qWrong++;
+  const c = qCards[qIdx];
+  const inp = document.getElementById('qAns');
+  const fb = document.getElementById('qFb');
+  const btn = document.getElementById('qBtnCheck');
+  inp.disabled = true;
+  fb.innerHTML = `Odpowiedź: <strong style="color:var(--gold)">${c.answer}</strong>`;
+  fb.className = 'q-feedback wrong';
+  btn.style.display = 'none';
+  document.querySelector('.q-btn-row').insertAdjacentHTML('afterbegin',
+    `<button class="q-btn q-btn-next" onclick="nextQCard()">Dalej →</button>`);
+}
+
+function nextQCard() { qIdx++; renderQCard(); }
+
+function renderQScore() {
+  const total = qCards.length;
+  const pct = Math.round(qCorrect / total * 100);
+  const msg = pct === 100 ? '¡Perfecto! Niesamowite!' :
+              pct >= 80  ? 'Świetnie! Prawie bezbłędnie.' :
+              pct >= 60  ? 'Nieźle, powtórz nieregularne!' :
+                           'Jeszcze raz! Ćwiczenie czyni mistrza.';
+
+  document.getElementById('qProgressFill').style.width = '100%';
+  document.getElementById('qProgressText').textContent = total + ' / ' + total;
+
+  document.getElementById('qArea').innerHTML = `
+    <div class="q-score">
+      <div class="q-score-pct">${pct}%</div>
+      <div class="q-score-lbl">Wynik końcowy</div>
+      <div class="q-score-stats">
+        <div class="q-score-stat"><div class="val g">${qCorrect}</div><div class="lbl">Poprawnie</div></div>
+        <div class="q-score-stat"><div class="val b">${qWrong}</div><div class="lbl">Błędy</div></div>
+        <div class="q-score-stat"><div class="val">${total}</div><div class="lbl">Razem</div></div>
+      </div>
+      <div class="q-score-msg">${msg}</div>
+      <button class="q-btn q-btn-restart" onclick="startQuiz()">Jeszcze raz ↺</button>
+    </div>`;
+}
+
+// ── TABS ──────────────────────────────────────────────
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'quiz' && qCards.length === 0) startQuiz();
+}
+
+// init quiz silently
+qCards = buildQCards('all');
+renderQCard();
+</script>
+</body>
+</html>
