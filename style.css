@@ -46,10 +46,10 @@ body::before {
 
 .brand-name {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(1.35rem, 4.2vw, 1.9rem);
+  font-size: clamp(2rem, 5vw, 3rem);
   text-decoration: none;
   color: var(--gold);
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: 0.01em;
 }
 
@@ -60,6 +60,20 @@ body::before {
   text-transform: uppercase;
   color: var(--gold-dim);
   white-space: nowrap;
+}
+
+.brand-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.header-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
 }
 
 .global-header {
@@ -73,9 +87,9 @@ body::before {
 
 .header-inner {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 10px;
   padding: 18px 0 16px;
 }
 
@@ -103,6 +117,7 @@ body::before {
 .lesson-main {
   width: min(1080px, 100% - 40px);
   margin: 0 auto;
+  padding-top: 22px;
 }
 
 .lesson-hero {
@@ -112,21 +127,36 @@ body::before {
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.04em;
+  gap: 12px;
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: 0;
   color: var(--muted);
-  text-transform: uppercase;
+  width: auto;
+  margin-top: 10px;
+  margin-left: 2px;
+}
+
+.crumb-slash {
+  display: inline-block;
+  font-style: italic;
+  transform: skew(-10deg);
 }
 
 .breadcrumb a {
   color: var(--gold);
   text-decoration: none;
+  transition: color 0.2s, text-decoration-color 0.2s;
 }
 
 .breadcrumb a:hover {
+  color: var(--text);
   text-decoration: underline;
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--text);
 }
 
 /* 3) Page layout: tabs, sections */
@@ -813,9 +843,18 @@ button {
     gap: 6px;
   }
 
+  .breadcrumb {
+    margin-top: 0;
+    margin-left: 0;
+  }
+
   .page-subtitle,
   .brand-meta {
     white-space: normal;
+  }
+
+  .header-subtitle {
+    display: none;
   }
 
   .home-shell { padding-top: 24px; }
