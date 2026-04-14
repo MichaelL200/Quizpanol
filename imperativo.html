@@ -173,7 +173,7 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
-// Data format: [infinitive, tu, vosotros, usted, ustedes]
+// Data format: [infinitive, tu, vosotros, x, ustedes]
 const ALL_VERBS = [
   ["hablar",    "Habla",     "Hablad",    "Hable",    "Hablen"],
   ["comer",     "Come",      "Comed",     "Coma",     "Coman"],
@@ -211,7 +211,7 @@ function getType(verb) { return VERB_TYPE[verb] || 'nieregularne'; }
 
 const PERSONS = ["Tú","Vosotros","Usted","Ustedes"];
 const COL = [1, 2, 3, 4];
-let mode = 'all', typeFilter = 'all', cards = [], idx = 0, correct = 0, wrong = 0, accent = 0, answered = false;
+let mode = 'all', typeFilter = 'all', cards = [], idx = 0, correct = 0, wrong = 0, accent = 0, answered = false, mistakes = [];
 
 // Normalize user input for accent/mark-insensitive comparison
 function normalize(s) {
@@ -231,7 +231,7 @@ function buildCards() {
     if (typeFilter !== 'all' && getType(v[0]) !== typeFilter) return;
     PERSONS.forEach((p, i) => {
       if (mode === 'all' || mode === p.toLowerCase())
-        list.push({ verb: v[0], person: p, answer: v[COL[i]] });
+        list.push({ verb: v[0], person: p, answer: v[COL[i]], prompt: `Podaj formę <strong>${p}</strong> od czasownika <strong>${v[0]}</strong>` });
     });
   });
   for (let i = list.length - 1; i > 0; i--) {
@@ -257,7 +257,7 @@ function setType(t, e) {
 
 function startQuiz() {
   cards = buildCards();
-  idx = 0; correct = 0; wrong = 0; accent = 0;
+  idx = 0; correct = 0; wrong = 0; accent = 0; mistakes = [];
   if (cards.length === 0) { renderEmpty(); return; }
   renderCard();
 }
@@ -284,7 +284,7 @@ function renderCard() {
   area.innerHTML = `
     <div class="card">
       <div class="card-number">${idx + 1} z ${cards.length}</div>
-      <div class="prompt">Podaj formę <strong>${c.person}</strong> od czasownika <strong>${c.verb}</strong></div>
+      <div class="prompt">${c.prompt}</div>
       <div class="hint">Tryb rozkazujący · Imperativo</div>
       <div class="input-row">
         <span class="excl">¡</span>
@@ -333,10 +333,12 @@ function checkAnswer() {
     inp.classList.add('accent-missing');
     fb.innerHTML = `~ Treść poprawna, ale brakuje akcentów: <strong style="color:var(--correct)">¡${c.answer}!</strong>`;
     fb.className = 'feedback accent-missing';
+    mistakes.push({ prompt: c.prompt, user: inp.value, correct: c.answer, type: 'accent' });
   } else {
     wrong++; inp.classList.add('wrong');
     fb.innerHTML = `✗ Poprawna forma: <strong style="color:var(--correct)">¡${c.answer}!</strong>`;
     fb.className = 'feedback wrong';
+    mistakes.push({ prompt: c.prompt, user: inp.value || '(brak)', correct: c.answer, type: 'wrong' });
   }
   inp.disabled = true;
   document.querySelector('.btn-row').insertAdjacentHTML('afterbegin',
@@ -352,6 +354,7 @@ function skipCard() {
   const fb = document.getElementById('fb');
   fb.innerHTML = `Forma: <strong style="color:var(--gold)">¡${c.answer}!</strong>`;
   fb.className = 'feedback wrong';
+  mistakes.push({ prompt: c.prompt, user: '(pominięto)', correct: c.answer, type: 'wrong' });
   document.getElementById('btnCheck').style.display = 'none';
   document.querySelector('.btn-row').insertAdjacentHTML('afterbegin',
     `<button class="btn-next" onclick="nextCard()">Dalej →</button>`);
@@ -370,6 +373,24 @@ function renderScore() {
   const accentStat = accent > 0
     ? `<div class="stat"><div class="stat-val accent">${accent}</div><div class="stat-lbl">Bez akcentów</div></div>`
     : '';
+
+  let mistakesHtml = '';
+  if (mistakes.length > 0) {
+    mistakesHtml = `
+      <div class="mistakes-list">
+        <div class="mistakes-title">Twoje potknięcia:</div>
+        ${mistakes.map(m => `
+          <div class="mistake-item">
+            <div class="mistake-prompt">${m.prompt}</div>
+            <div class="mistake-details">
+              <span class="mistake-val user">${m.user}</span>
+              <span class="mistake-val ${m.type}">¡${m.correct}!</span>
+            </div>
+          </div>
+        `).join('')}
+      </div>`;
+  }
+
   document.getElementById('progressFill').style.width = '100%';
   document.getElementById('progressText').textContent = total + ' / ' + total;
   document.getElementById('quizArea').innerHTML = `
@@ -384,6 +405,7 @@ function renderScore() {
       </div>
       <div class="score-msg">${msg}</div>
       <button class="btn-restart" onclick="startQuiz()">Jeszcze raz ↺</button>
+      ${mistakesHtml}
     </div>`;
 }
 

@@ -878,6 +878,54 @@ button {
   margin-top: 4px;
 }
 
+.mistakes-list {
+  text-align: left;
+  margin-top: 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.mistakes-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 16px;
+}
+
+.mistake-item {
+  background: var(--card-dark);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.mistake-prompt {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+
+.mistake-details {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.mistake-val {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+}
+
+.mistake-val.user { color: var(--wrong); text-decoration: line-through; opacity: 0.8; }
+.mistake-val.correct { color: var(--correct); }
+.mistake-val.accent { color: var(--gold); }
+
 /* 6) Utility helpers */
 .mt-lg { margin-top: 32px; }
 .mb-sm { margin-bottom: 12px; }
