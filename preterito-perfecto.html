@@ -111,8 +111,16 @@
   </div>
 
   <div class="note">
-    <strong>Czasowniki zwrotne:</strong> zaimek zawsze <em>przed</em> haber.<br>
-    <em>Lucía <strong>se</strong> ha levantado temprano.</em>
+    <strong>Czasowniki zwrotne:</strong> zaimek zawsze <em>przed</em> odmienionym <em>haber</em>.
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; font-family: monospace; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px;">
+      <div>yo <strong>me</strong> he</div>
+      <div>nosotros <strong>nos</strong> hemos</div>
+      <div>tú <strong>te</strong> has</div>
+      <div>vosotros <strong>os</strong> habéis</div>
+      <div>él/ella/ud. <strong>se</strong> ha</div>
+      <div>ellos/uds. <strong>se</strong> han</div>
+    </div>
+    Przykład: <em>Lucía <strong>se</strong> ha levantado temprano.</em>
   </div>
 
   <div class="t-label mt-lg">Participio nieregularne</div>
@@ -183,12 +191,16 @@
         <button class="mode-btn" onclick="setTypFilter('nieregularne', event)">Nieregularne</button>
       </div>
     </div>
-    <div id="filter-liczba-wrap" style="display:none">
-      <div class="filter-row-label">Liczba</div>
-      <div class="mode-row" id="row-liczba">
-        <button class="mode-btn active" onclick="setLiczbaFilter('all', event)">Wszystkie</button>
-        <button class="mode-btn" onclick="setLiczbaFilter('pojedyncza', event)">Pojedyncza</button>
-        <button class="mode-btn" onclick="setLiczbaFilter('mnoga', event)">Mnoga</button>
+    <div id="filter-osoba-wrap" style="display:none">
+      <div class="filter-row-label">Osoba</div>
+      <div class="mode-row" id="row-osoba">
+        <button class="mode-btn active" onclick="setOsobaFilter('all', event)">Wszystkie</button>
+        <button class="mode-btn" onclick="setOsobaFilter('yo', event)">yo</button>
+        <button class="mode-btn" onclick="setOsobaFilter('tú', event)">tú</button>
+        <button class="mode-btn" onclick="setOsobaFilter('él/ella/usted', event)">él/ella/ud.</button>
+        <button class="mode-btn" onclick="setOsobaFilter('nosotros', event)">nosotros</button>
+        <button class="mode-btn" onclick="setOsobaFilter('vosotros', event)">vosotros</button>
+        <button class="mode-btn" onclick="setOsobaFilter('ellos/ellas/ustedes', event)">ellos/uds.</button>
       </div>
     </div>
   </div>
@@ -221,8 +233,8 @@ const PARTICIPIOS = [
   ["escribir","escrito"],["volver","vuelto"],["poner","puesto"],
   ["decir","dicho"],["ir","ido"],["tener","tenido"],
   ["salir","salido"],["venir","venido"],["trabajar","trabajado"],
-  ["preparar","preparado"],["llevar","llevado"],["lavar","lavado"],
-  ["levantar","levantado"],["cenar","cenado"],
+  ["pensar","pensado"],["dormir","dormido"],["vestirse","vestido"],
+  ["sentarse","sentado"],["levantarse","levantado"],["cenar","cenado"],
 ];
 
 const CONJUGACIONES = [
@@ -238,24 +250,38 @@ const ZDANIA = [
   ["Juan, esta mañana (levantarse) ___ a las siete.", "se ha levantado"],
   ["Hace cinco minutos que yo (terminar) ___ de desayunar.", "he terminado"],
   ["Este mes mis padres no (salir) ___ de viaje.", "han salido"],
-  ["Hoy (ser) ___ un día muy especial.", "ha sido"],
+  ["Hoy (ser) ___ un día bardzo specjalny.", "ha sido"],
   ["Este año mi hermana (volver) ___ de México.", "ha vuelto"],
   ["Esta tarde tú (escribir) ___ la carta.", "has escrito"],
   ["¿(Comer, vosotros) ___ en casa hoy?", "habéis comido"],
   ["Esta mañana mis amigos (quedarse) ___ en casa.", "se han quedado"],
-  ["Lucía (hacer) ___ gimnasia hoy.", "ha hecho"],
+  ["Lucía (hacer) ___ gimnasia dzisiaj.", "ha hecho"],
   ["Esta mañana no (poder, yo) ___ ir en coche.", "he podido"],
+  ["Hoy yo (ducharse) ___ con agua fría.", "me he duchado"],
+  ["¿Ya (lavarse, tú) ___ las manos?", "te has lavado"],
+  ["Nosotros (quedarse) ___ en la playa toda la tarde.", "nos hemos quedado"],
+  ["Vosotros (vestirse) ___ muy elegantes para la fiesta.", "os habéis vestido"],
+  ["Ellos (despertarse) ___ bardzo tarde hoy.", "se han despertado"],
 ];
 
-let qMode = 'all', typFilter = 'all', liczbaFilter = 'all', cards = [], idx = 0, correct = 0, wrong = 0, accent = 0, answered = false, mistakes = [];
+let qMode = 'all', typFilter = 'all', osobaFilter = 'all', cards = [], idx = 0, correct = 0, wrong = 0, accent = 0, answered = false, mistakes = [];
+
+const HABER = {
+  "yo": "he", "tú": "has", "él/ella/usted": "ha",
+  "nosotros": "hemos", "vosotros": "habéis", "ellos/ellas/ustedes": "han"
+};
+const PRONOMS = {
+  "yo": "me", "tú": "te", "él/ella/usted": "se",
+  "nosotros": "nos", "vosotros": "os", "ellos/ellas/ustedes": "se"
+};
+const PEOPLE = ["yo", "tú", "él/ella/usted", "nosotros", "vosotros", "ellos/ellas/ustedes"];
 
 // Irregular participios (not formed by regular -ar→-ado, -er/-ir→-ido)
 const PART_IRREG = new Set(['abrir','hacer','romper','ver','escribir','volver','poner','decir']);
-function getPartType(inf) { return PART_IRREG.has(inf) ? 'nieregularne' : 'regularne'; }
-
-// Singular pronouns (yo/tú/él-ella-usted), rest are plural
-const SINGULAR_PRONS = new Set(['yo','tú','él','ella','él/ella','usted']);
-function getLiczba(pron) { return SINGULAR_PRONS.has(pron) ? 'pojedyncza' : 'mnoga'; }
+function getPartType(inf) { 
+  const base = inf.replace('se', '');
+  return PART_IRREG.has(base) ? 'nieregularne' : 'regularne'; 
+}
 
 // Normalize user input for accent/mark-insensitive comparison
 function norm(s) {
@@ -268,25 +294,45 @@ function normSoft(s) {
   return s.trim().replace(/[¡!¿?]/g,'').toLowerCase();
 }
 
+function getFullForm(inf, part, person) {
+  const isReflexive = inf.endsWith('se');
+  const haber = HABER[person];
+  if (isReflexive) {
+    const pron = PRONOMS[person];
+    return `${pron} ${haber} ${part}`;
+  }
+  return `${haber} ${part}`;
+}
+
 // Build and shuffle quiz cards
 function buildCards() {
   let list = [];
+  
+  // Participio Mode
   if (qMode === 'all' || qMode === 'participio') {
     PARTICIPIOS.forEach(([inf, part]) => {
       if (qMode === 'participio' && typFilter !== 'all' && getPartType(inf) !== typFilter) return;
       list.push({ prompt: `Podaj participio od: <strong>${inf}</strong>`, answer: part, hint: 'participio' });
     });
   }
+  
+  // Conjugacion Mode (Odmiana)
   if (qMode === 'all' || qMode === 'conjugacion') {
-    CONJUGACIONES.forEach(([inf, pron, form]) => {
-      if (qMode === 'conjugacion' && liczbaFilter !== 'all' && getLiczba(pron) !== liczbaFilter) return;
-      list.push({ prompt: `Odmień w pretérito perfecto:<br><strong>${inf}</strong> — ${pron}`, answer: form, hint: 'forma' });
+    PARTICIPIOS.forEach(([inf, part]) => {
+      PEOPLE.forEach(p => {
+        if (osobaFilter !== 'all' && osobaFilter !== p) return;
+        const form = getFullForm(inf, part, p);
+        list.push({ prompt: `Odmień w pretérito perfecto:<br><strong>${inf}</strong> — ${p}`, answer: form, hint: 'forma' });
+      });
     });
   }
+  
+  // Zdania Mode (Sentences)
   if (qMode === 'all' || qMode === 'zdanie') {
     ZDANIA.forEach(([sent, ans]) =>
       list.push({ prompt: sent.replace('___', '<span style="color:var(--gold)">___</span>'), answer: ans, hint: 'uzupełnij formę' }));
   }
+  
   for (let i = list.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [list[i], list[j]] = [list[j], list[i]];
@@ -296,17 +342,17 @@ function buildCards() {
 
 function updateFilterRows() {
   document.getElementById('filter-typ-wrap').style.display   = qMode === 'participio'  ? 'block' : 'none';
-  document.getElementById('filter-liczba-wrap').style.display = qMode === 'conjugacion' ? 'block' : 'none';
+  document.getElementById('filter-osoba-wrap').style.display = qMode === 'conjugacion' ? 'block' : 'none';
 }
 
 function setQMode(m, e) {
   qMode = m;
   typFilter = 'all';
-  liczbaFilter = 'all';
+  osobaFilter = 'all';
   document.querySelectorAll('#row-mode .mode-btn').forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
   document.querySelectorAll('#row-typ .mode-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
-  document.querySelectorAll('#row-liczba .mode-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+  document.querySelectorAll('#row-osoba .mode-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
   updateFilterRows();
   startQuiz();
 }
@@ -318,9 +364,9 @@ function setTypFilter(t, e) {
   startQuiz();
 }
 
-function setLiczbaFilter(l, e) {
-  liczbaFilter = l;
-  document.querySelectorAll('#row-liczba .mode-btn').forEach(b => b.classList.remove('active'));
+function setOsobaFilter(o, e) {
+  osobaFilter = o;
+  document.querySelectorAll('#row-osoba .mode-btn').forEach(b => b.classList.remove('active'));
   e.target.classList.add('active');
   startQuiz();
 }
