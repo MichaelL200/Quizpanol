@@ -22,8 +22,7 @@ function showTab(id, btn) {
 
 // Normalize input for comparison (strip punctuation, lowercase, optionally strip diacritics)
 function _norm(s, keepAccents) {
-  const re = new RegExp(_cfg.punctuationChars || '[¡!¿?]', 'g');
-  let out = s.trim().replace(re, '').toLowerCase();
+  let out = s.trim().replace(_cfg._punctuationRe, '').toLowerCase();
   if (!keepAccents) out = out.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   return out;
 }
@@ -187,4 +186,5 @@ function renderScore() {
 // Initialize the quiz engine with lesson-specific configuration
 function initQuizEngine(config) {
   _cfg = config;
+  _cfg._punctuationRe = new RegExp(config.punctuationChars || '[¡!¿?]', 'g');
 }
