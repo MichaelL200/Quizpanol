@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>¡Quizpañol! · Imperativo</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../shared/style.css">
 <script>
   (function() {
     var t = localStorage.getItem('quizpanol-theme');
@@ -16,7 +16,7 @@
 
 <header class="global-header">
   <div class="container header-inner">
-    <a class="brand-name" href="index.html">¡Quizpañol!</a>
+    <a class="brand-name" href="../index.html">¡Quizpañol!</a>
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <span class="crumb-slash" aria-hidden="true">/</span>
       <span aria-current="page">Imperativo</span>
@@ -83,6 +83,7 @@
       <tr class="irreg"><td>oír</td><td>Oye</td><td>Oíd</td><td>Oiga</td><td>Oigan</td></tr>
       <tr class="irreg"><td>ver</td><td>Ve</td><td>Ved</td><td>Vea</td><td>Vean</td></tr>
       <tr class="irreg"><td>conducir</td><td>Conduce</td><td>Conducid</td><td>Conduzca</td><td>Conduzcan</td></tr>
+      <tr class="irreg"><td>traducir</td><td>Traduce</td><td>Traducid</td><td>Traduzca</td><td>Traduzcan</td></tr>
       <tr class="irreg"><td>estar</td><td>Estate</td><td>Estad</td><td>Esté</td><td>Estén</td></tr>
       <tr class="irreg"><td>dar</td><td>Da</td><td>Dad</td><td>Dé</td><td>Den</td></tr>
       <tr class="irreg"><td>saber</td><td>Sabe</td><td>Sabed</td><td>Sepa</td><td>Sepan</td></tr>
@@ -166,7 +167,7 @@
 
 </main>
 
-<script src="quiz.js"></script>
+<script src="../shared/quiz.js"></script>
 <script>
 // Data format: [infinitive, tu, vosotros, usted, ustedes]
 const ALL_VERBS = [
@@ -193,6 +194,7 @@ const ALL_VERBS = [
   ["oír",       "Oye",       "Oíd",       "Oiga",     "Oigan"],
   ["ver",       "Ve",        "Ved",       "Vea",      "Vean"],
   ["conducir",  "Conduce",   "Conducid",  "Conduzca", "Conduzcan"],
+  ["traducir",  "Traduce",   "Traducid",  "Traduzca", "Traduzcan"],
   ["estar",     "Estate",    "Estad",     "Esté",     "Estén"],
   ["dar",       "Da",        "Dad",       "Dé",       "Den"],
   ["saber",     "Sabe",      "Sabed",     "Sepa",     "Sepan"],
@@ -257,6 +259,6 @@ initQuizEngine({
 
 startQuiz();
 </script>
-<script src="theme.js"></script>
+<script src="../shared/theme.js"></script>
 </body>
 </html>
