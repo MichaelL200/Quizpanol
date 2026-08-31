@@ -9,11 +9,12 @@ Prosta aplikacja webowa do nauki gramatyki języka hiszpańskiego. Powstała z m
 ### 📚 Dostępne lekcje
 1. **Me gusta & Reflexivos** – czasowniki typu *gustar* i czasowniki zwrotne.
 2. **Pretérito Indefinido** – budowa i użycie czasu przeszłego dokonanego prostego.
-3. **Números y fechas** – liczby i daty.
-4. **Pretérito Perfecto** – budowa czasu przeszłego złożonego i participio.
-5. **Pretérito Imperfecto** – budowa i użycie czasu przeszłego niedokonanego.
-6. **Futuro Imperfecto** – budowa i użycie czasu przyszłego prostego.
-7. **Imperativo** – tryb rozkazujący i jego formy.
+3. **Pronombres interrogativos** - zaimki pytające.
+4. **Números y fechas** – liczby i daty.
+5. **Pretérito Perfecto** – budowa czasu przeszłego złożonego i participio.
+6. **Pretérito Imperfecto** – budowa i użycie czasu przeszłego niedokonanego.
+7. **Futuro Imperfecto** – budowa i użycie czasu przyszłego prostego.
+8. **Imperativo** – tryb rozkazujący i jego formy.
 
 Każda lekcja składa się z części teoretycznej i quizu sprawdzającego wiedzę.
 
